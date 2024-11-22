@@ -43,11 +43,42 @@ knitr::knit_hooks$set(
 # Load libraries
 
 ```{r Load_libraries, results=FALSE, message=FALSE, warning=FALSE}
-load_libraries <- function(...) {
-  libs <- list(...)
-  lapply(libs, require, character.only = TRUE)
-}
-invisible(load_libraries("dplyr", "tibble", "tidyverse", "DT", "SummarizedExperiment", "survival", "survminer", "readr", "glmnet", "caret", "openxlsx", "biomaRt", "writexl", "edgeR", "pROC", "caTools", "survivalROC", "risksetROC", "lattice", "survMisc", "SIS", "VennDiagram", "glmSparseNet", "randomForestSRC", "grf", "Boruta", "timeROC", "qvalue", "clusterProfiler", "org.Hs.eg.db", "enrichplot", "pathview", "UpSetR","rsample", "pec"))
+# library(TCGAbiolinks)
+library(dplyr)
+# library(tibble)
+# library(tidyverse)
+library(DT)
+library(SummarizedExperiment)
+library(survival)
+library(survminer)
+# library(readr)
+library(glmnet)
+library(caret)
+library(openxlsx)
+library(biomaRt)
+library(writexl)
+library(edgeR)
+library(pROC)
+library(caTools)
+library(survivalROC)
+library(risksetROC)
+library(lattice)
+library(survMisc)
+library(SIS)
+library(VennDiagram)
+# library(glmSparseNet)
+library(randomForestSRC)
+library(grf)
+library(Boruta)
+library(timeROC)
+library(qvalue)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(enrichplot)
+library(pathview)
+library(UpSetR)
+library(rsample)
+library(pec)
 ```
 
 # Prepare the environment, report chunk status and sessioninfo

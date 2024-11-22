@@ -4,6 +4,8 @@ log_chunk_end_time <- function(..., log_file = "ignored", namespace = "chunk") {
 
 # Execute on environment of `log_chunk_end_time`
 local({
+  pryr::mem_used
+
   purple <- crayon::combine_styles(crayon::bold, crayon::make_style("purple"))
   gray <- crayon::make_style("gray70")
 
