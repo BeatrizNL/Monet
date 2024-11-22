@@ -45,7 +45,7 @@ knitr::knit_hooks$set(
 ```{r Load_libraries, results=FALSE, message=FALSE, warning=FALSE}
 # library(TCGAbiolinks)
 library(dplyr)
-# library(tibble)
+library(tibble)
 # library(tidyverse)
 library(DT)
 library(SummarizedExperiment)
@@ -309,7 +309,7 @@ rownames(num_coeff_df) <- models_names_list
 
 # Loop through the seeds and run the analysis
 for (i in seq_along(seeds)) {
-  cat("Running analysis for seed:", seeds[i], "\n")
+  logger::log_info("Running analysis for seed: {seeds[i]}")
   
   # Split the data
   set.seed(i)
@@ -345,9 +345,9 @@ for (i in seq_along(seeds)) {
       
       IBS_df[j, i] <- calculate_integrated_brier_score(survival_object_train, genes_expression_train, models_coefficients_list[[i]][[j]], genes_expression_test, survival_test)
         
-      cat("seed: ", seeds[i], "\n",
-          "c_index: ", c_index_df[j, i], "\n", 
-          "IBS: ", IBS_df[j, i], "\n")
+      logger::log_info("seed: ", seeds[i])
+      logger::log_info("c_index: ", c_index_df[j, i])
+      logger::log_info("IBS: ", IBS_df[j, i])
       num_coeff_df[j, i] <- length(models_coefficients_list[[i]][[j]]$ensembl_gene_id)
     } else {
 
@@ -389,7 +389,7 @@ log_chunk_end_time("Fit and Explore the Models (train != test)", log_file = "chu
 best_model_index <- which.max(rowMeans(c_index_df, na.rm = TRUE)) #4
 best_model_name <- rownames(c_index_df)[best_model_index]
 
-cat("Best model:", best_model_name, "\n")
+logger::log_info("Best model:", best_model_name)
 
 # Get the coefficients of the best model
 best_model_coefficients <- models_coefficients_list[[10]][[best_model_index]] # o index aqui escolhido tem que bater certo com o seed do split data para que dê igual performance
@@ -484,7 +484,7 @@ title(main= "AUC based on Incident case/dynamic control")
 dev.off() # to save the plot above
 
 # Print the concordance based on the Incident Case/Dynamic Control definition (calculated as a weighted average of the area under time-specific ROC)
-cat("Concordance based on Incident Case/Dynamic Control definition:", riskAUC$Cindex, "\n")
+logger::log_info("Concordance based on Incident Case/Dynamic Control definition:", riskAUC$Cindex)
 
 #---------------------------- UpSet plot
 
@@ -573,7 +573,7 @@ rownames(num_coeff_df_all_equal) <- models_names_list
 
 # Loop through the seeds and run the analysis
 for (i in seq_along(seeds_all_equal)) {
-  cat("Running analysis for seed:", seeds_all_equal[i], "\n")
+  logger::log_info("Running analysis for seed:", seeds_all_equal[i])
 
   set.seed(i)
   # Split the data
@@ -614,9 +614,9 @@ for (i in seq_along(seeds_all_equal)) {
       
       IBS_df_all_equal[j, i] <- calculate_integrated_brier_score(survival_object_train, genes_expression_train, models_coefficients_list_all_equal[[i]][[j]], genes_expression_test, survival_test)
         
-      cat("seed: ", seed_all_equals[i], "\n",
-          "c_index: ", c_index_df_all_equal[j, i], "\n", 
-          "IBS: ", IBS_df_all_equal[j, i], "\n")
+      logger::log_info("seed: ", seed_all_equals[i])
+      logger::log_info"c_index: ", c_index_df_all_equal[j, i])
+      logger::log_info"IBS: ", IBS_df_all_equal[j, i])
       num_coeff_df_all_equal[j, i] <- length(models_coefficients_list_all_equal[[i]][[j]]$ensembl_gene_id)
     
     } else {
@@ -661,7 +661,7 @@ log_chunk_end_time("Fit and Explore the Models (train = test)", log_file = "chun
 best_model_index_all_equal <- which.max(rowMeans(c_index_df_all_equal, na.rm = TRUE)) #4
 best_model_name_all_equal <- rownames(c_index_df_all_equal)[best_model_index_all_equal]
 
-cat("Best model:", best_model_name_all_equal, "\n")
+logger::log_info("Best model:", best_model_name_all_equal)
 
 # Get the coefficients of the best model
 best_model_coefficients_all_equal <- models_coefficients_list_all_equal[[1]][[best_model_index_all_equal]] # o index aqui escolhido tem que bater certo com o seed do split data para que dê igual performance
@@ -756,7 +756,7 @@ title(main= "AUC based on Incident case/dynamic control")
 dev.off() # to save the plot above
 
 # Print the concordance based on the Incident Case/Dynamic Control definition (calculated as a weighted average of the area under time-specific ROC)
-cat("Concordance based on Incident Case/Dynamic Control definition:", riskAUC_all_equal$Cindex, "\n")
+logger::log_info("Concordance based on Incident Case/Dynamic Control definition:", riskAUC_all_equal$Cindex)
 
 # #---------------------------- UpSet plot
 # 
@@ -842,14 +842,14 @@ kegg_enrichment <- enrichKEGG(gene         = genes_list$ENTREZID,
 if (nrow(as.data.frame(go_enrichment)) > 0) {
   dotplot(go_enrichment, showCategory = 10)  # Show top 10 GO terms
 } else {
-  cat("No enriched GO terms to plot.", "\n")
+  logger::log_info("No enriched GO terms to plot.")
 }
 
 # Dot plot for GO enrichment results if results are found
 if (nrow(as.data.frame(kegg_enrichment)) > 0) {
   dotplot(kegg_enrichment, showCategory = 10)  # Show top 10 GO terms
 } else {
-  cat("No enriched KEGG terms to plot.", "\n")
+  logger::log_info("No enriched KEGG terms to plot.")
 }
 
 # write on the chunk end time file

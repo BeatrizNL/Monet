@@ -37,3 +37,5 @@ local({
     namespace = "chunk"
   )
 }, env = environment(log_chunk_end_time))
+
+logger::log_appender(logger::appender_tee("logger.txt"))
