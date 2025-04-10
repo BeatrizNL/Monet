@@ -10,3 +10,4 @@ Glioma_merged_classification_mutations_survival.csv
 run-cache
 memoise-cache
 TCGA_RNA.rds
+sessioninfo.txt
